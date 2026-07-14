@@ -22,10 +22,17 @@ RUN npm run build --workspace=apps/api
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV PORT 4000
+# Ensure standard production environment variables are globally set
+ENV NODE_ENV=production
+ENV PORT=4000
 
-# Copy over the built files and node_modules directly
+# Explicitly bind the variable links to the OS environment system
+ENV JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+ENV JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
+ENV DATABASE_URL=$DATABASE_URL
+ENV REDIS_URL=$REDIS_URL
+
+# Copy everything built over from the builder step
 COPY --from=builder /app ./
 
 RUN addgroup --system --gid 1001 nodejs
@@ -34,5 +41,4 @@ USER expressjs
 
 EXPOSE 4000
 
-# Using start:prod maps directly to node dist/main and inherits Render environment variables perfectly
 CMD ["npm", "run", "start:prod", "--workspace=apps/api"]
