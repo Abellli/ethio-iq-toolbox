@@ -15,7 +15,7 @@ export class MvRefreshScheduler {
 
   constructor(@Inject(PG_POOL) private readonly pool: Pool) {}
 
-  @Cron(CronExpression.EVERY_2_MINUTES)
+@Cron('*/2 * * * *')
   async refresh() {
     try {
       await this.pool.query('REFRESH MATERIALIZED VIEW CONCURRENTLY mv_survey_daily_stats');
