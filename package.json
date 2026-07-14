@@ -1,0 +1,19 @@
+{
+  "name": "ethio-iq-toolbox",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/admin",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=apps/admin",
+    "dev:api": "npm run start:dev --workspace=apps/api",
+    "dev:analytics": "cd apps/analytics && uvicorn main:app --reload --port 8001",
+    "build": "npm run build --workspace=apps/admin && npm run build --workspace=apps/api",
+    "db:migrate": "psql \"$DATABASE_URL\" -f database/schema.sql"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

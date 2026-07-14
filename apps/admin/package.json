@@ -1,0 +1,42 @@
+{
+  "name": "@ethio-iq/admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7",
+    "lucide-react": "^0.400.0",
+    "clsx": "^2.1.1",
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "deck.gl": "^9.0.33",
+    "@deck.gl/react": "^9.0.33",
+    "@deck.gl/core": "^9.0.33",
+    "@deck.gl/layers": "^9.0.33",
+    "@deck.gl/geo-layers": "^9.0.33",
+    "@deck.gl/aggregation-layers": "^9.0.33",
+    "d3-hierarchy": "^3.1.2",
+    "d3-shape": "^3.2.0",
+    "d3-scale-chromatic": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/d3-hierarchy": "^3.1.7",
+    "@types/d3-shape": "^3.1.6",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.0"
+  }
+}
