@@ -40,4 +40,4 @@ USER expressjs
 
 EXPOSE 4000
 
-CMD ["node", "apps/api/dist/src/main.js"]
+CMD ["node", "apps/api/dist/main.js"]
