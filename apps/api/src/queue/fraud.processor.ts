@@ -11,7 +11,7 @@ export interface FraudScoringJob {
   responseId: string;
 }
 
-@Processor(FRAUD_QUEUE)
+@Processor('fraud-scoring')
 export class FraudProcessor extends WorkerHost {
   constructor(@Inject(PG_POOL) private readonly pool: Pool) {
     super();
