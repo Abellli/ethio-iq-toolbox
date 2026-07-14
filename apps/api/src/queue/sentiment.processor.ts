@@ -11,7 +11,7 @@ export interface SentimentScoringJob {
   text: string;
 }
 
-@Processor(SENTIMENT_QUEUE)
+@Processor('sentiment-scoring')
 export class SentimentProcessor extends WorkerHost {
   constructor(
     @Inject(PG_POOL) private readonly pool: Pool,
