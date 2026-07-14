@@ -28,16 +28,11 @@ ENV PORT 4000
 # Copy over the built files and node_modules directly
 COPY --from=builder /app ./
 
-# Pull the environment keys from Render into the container
-ARG JWT_ACCESS_SECRET
-ARG JWT_REFRESH_SECRET
-ENV JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
-ENV JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs
 USER expressjs
 
 EXPOSE 4000
 
-CMD ["node", "apps/api/dist/main.js"]
+# Using start:prod maps directly to node dist/main and inherits Render environment variables perfectly
+CMD ["npm", "run", "start:prod", "--workspace=apps/api"]
