@@ -25,14 +25,19 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV PORT 4000
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 expressjs
-
 # Copy over the built files and node_modules directly
 COPY --from=builder /app ./
 
+# Pull the environment keys from Render into the container
+ARG JWT_ACCESS_SECRET
+ARG JWT_REFRESH_SECRET
+ENV JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+ENV JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 expressjs
 USER expressjs
 
 EXPOSE 4000
 
-CMD ["npm", "run", "start", "--workspace=apps/api"]
+CMD ["node", "apps/api/dist/src/main.js"]
