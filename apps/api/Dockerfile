@@ -1,42 +1,38 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS builder
 
-# Install dependencies only when needed
-FROM base AS deps
+WORKDIR /app
+
+# Install build dependencies
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
-# Copy package management files
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Copy package files from root to manage workspaces
+COPY package.json package-lock.json* ./
+COPY apps/api/package.json ./apps/api/
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Install dependencies for the entire project
+RUN npm ci
+
+# Copy all source files
 COPY . .
 
-# Build the API application
+# Build the API workspace application
 RUN npm run build --workspace=apps/api
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Production runner environment
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV PORT 4000
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs
 
+# Copy over the built files and node_modules directly
 COPY --from=builder /app ./
 
 USER expressjs
 
 EXPOSE 4000
-
-ENV PORT 4000
 
 CMD ["npm", "run", "start", "--workspace=apps/api"]
